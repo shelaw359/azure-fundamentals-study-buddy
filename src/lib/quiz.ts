@@ -11,18 +11,18 @@ export type ParsedAnswer = { text: string; quiz: Quiz | null };
 
 function isQuiz(value: unknown): value is Quiz {
   if (!value || typeof value !== "object") return false;
-  const v = value as Record<string, unknown>;
+  const { question, options, correctIndex, explanation } = value as Record<string, unknown>;
   return (
-    typeof v["question"] === "string" &&
-    Array.isArray(v["options"]) &&
-    v["options"].length >= 2 &&
-    v["options"].length <= 6 &&
-    v["options"].every((o) => typeof o === "string") &&
-    typeof v["correctIndex"] === "number" &&
-    Number.isInteger(v["correctIndex"]) &&
-    v["correctIndex"] >= 0 &&
-    v["correctIndex"] < v["options"].length &&
-    typeof v["explanation"] === "string"
+    typeof question === "string" &&
+    Array.isArray(options) &&
+    options.length >= 2 &&
+    options.length <= 6 &&
+    options.every((o) => typeof o === "string") &&
+    typeof correctIndex === "number" &&
+    Number.isInteger(correctIndex) &&
+    correctIndex >= 0 &&
+    correctIndex < options.length &&
+    typeof explanation === "string"
   );
 }
 
