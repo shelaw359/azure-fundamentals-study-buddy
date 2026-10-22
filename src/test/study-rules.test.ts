@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import { parseAnswer } from "@/lib/quiz";
 import { CHAT_LIMITS, createRateLimiter } from "@/lib/rate-limit";
-import { isLanguageId, LANGUAGES } from "@/lib/languages";
+import { DEFAULT_LANGUAGE, isLanguageId, LANGUAGES } from "@/lib/languages";
 import { DOMAINS } from "@/lib/topics";
 import { GLOSSARY } from "@/lib/glossary";
 import { buildInstructions } from "@/lib/ai/tutor-prompt";
@@ -51,9 +51,20 @@ describe("backend limits", () => {
 });
 
 describe("content rules", () => {
-  it("offers the four required languages", () => {
-    expect(LANGUAGES.map((l) => l.id)).toEqual(["english", "kiswahili", "sheng", "mix"]);
+  it("offers the three required languages", () => {
+    expect(LANGUAGES.map((l) => l.id)).toEqual(["english", "kiswahili", "mix"]);
     expect(isLanguageId("klingon")).toBe(false);
+  });
+
+  it("treats a previously saved Sheng choice as invalid so it falls back to English", () => {
+    expect(isLanguageId("sheng")).toBe(false);
+    expect(DEFAULT_LANGUAGE).toBe("english");
+  });
+
+  it("keeps Azure terms in English and has no Sheng instruction in the prompt", () => {
+    const p = buildInstructions("Kiswahili", "Regions");
+    expect(p).toContain("Keep Azure terms and service names in English.");
+    expect(p.toLowerCase()).not.toContain("sheng");
   });
 
   it("uses the AZ-900 exam weightings", () => {
