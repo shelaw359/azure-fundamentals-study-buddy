@@ -19,12 +19,15 @@ export default defineConfig({
       VitePWA({
         strategies: "generateSW",
         filename: "sw.js",
+        // TanStack Start emits browser files to dist/client; the worker must live there.
+        outDir: "dist/client",
         registerType: "autoUpdate",
         injectRegister: null,
         manifest: false, // served from public/manifest.webmanifest
         devOptions: { enabled: false },
         includeAssets: ["offline.html", "favicon.png", "manifest.webmanifest", "icons/*.png"],
         workbox: {
+          globDirectory: "dist/client",
           globPatterns: ["**/*.{js,css,png,svg,ico,woff2,webmanifest}", "offline.html"],
           navigateFallback: null,
           cleanupOutdatedCaches: true,
