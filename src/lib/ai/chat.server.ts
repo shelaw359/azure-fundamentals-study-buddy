@@ -78,7 +78,7 @@ function friendlyError(error: unknown): string {
 }
 
 export async function handleChat(request: Request): Promise<Response> {
-  const apiKey = process.env.LOVABLE_API_KEY;
+  const apiKey = process.env["LOVABLE_API_KEY"];
   if (!apiKey) return json(500, { error: "The AI service is not configured yet." });
 
   const limit = limiter.check(clientKey(request));
@@ -101,7 +101,7 @@ export async function handleChat(request: Request): Promise<Response> {
   if (!messages) return json(400, { error: "Please type a question first." });
 
   const last = messages[messages.length - 1];
-  if (last.role !== "user") return json(400, { error: "Please type a question first." });
+  if (!last || last.role !== "user") return json(400, { error: "Please type a question first." });
   if (textOf(last).length > CHAT_LIMITS.maxMessageChars) {
     return json(400, { error: `Please keep your message under ${CHAT_LIMITS.maxMessageChars} characters.` });
   }
