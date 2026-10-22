@@ -14,7 +14,7 @@ Cloud concepts like "elasticity", "availability zones" or "the shared responsibi
 AZ-900 Study Buddy is a mobile-first chat tutor that:
 
 - explains every concept in plain words, with a real-life African analogy (M-Pesa, SACCOs, matatus, mama mboga, dukas, farms, schools, banks);
-- can answer in English, Kiswahili, Sheng-flavoured English or a mix — while always keeping official Azure terms in English so learners recognise them in the exam;
+- can answer in English, Kiswahili or a mix of both — while always keeping official Azure terms in English so learners recognise them in the exam;
 - ends every explanation with one original multiple-choice check question, rendered as an interactive card with instant feedback.
 
 ## Features
@@ -26,7 +26,7 @@ AZ-900 Study Buddy is a mobile-first chat tutor that:
 - **Session score** with a progress ring in the header, and confetti for every 3 correct answers in a row.
 - **"I'm lost" button** – re-explains the last answer with a much simpler analogy.
 - **Mini glossary** – 36 searchable terms with original one-line definitions; tap to get a full explanation.
-- **Language selector** – English (simple), Kiswahili, Sheng-flavoured English, Mix.
+- **Language selector** – English (simple), Kiswahili, Mix (English + Kiswahili).
 - **Dark / light mode.**
 - **Saved progress** – chat history, topic, language and score are kept in the browser (localStorage). No login.
 - **Installable app (PWA)** – "Install app" button when the browser supports it, teal theme, standalone display, cloud app icons (192 and 512 px).
@@ -53,7 +53,7 @@ The system prompt (`src/lib/ai/tutor-prompt.ts`) is used verbatim on the server 
 1. **Scope** – only AZ-900 topics; politely steer off-topic questions back.
 2. **Teaching style** – a fixed 5-step shape: one-sentence definition → one accurate African analogy (and where it breaks down) → how it appears in Azure with correct service names → an "Exam tip" line → under 200 words.
 3. **Accuracy rules** – based on the public skills outline; admit uncertainty and point to Microsoft Learn; never invent services, prices, limits or SLAs; never reproduce real exam questions.
-4. **Language rules** – reply in the selected language, keep Azure terms in English, keep Sheng light.
+4. **Language rules** – reply in the selected language, keep Azure terms and service names in English, use clear everyday Swahili.
 5. **Structured quiz output** – one original 4-option question at the end inside `<quiz>…</quiz>` as strict JSON (`question`, `options`, `correctIndex`, `explanation`). The frontend parses it, strips it from the visible text and renders the interactive card. If the JSON is invalid, the text is shown and nothing crashes.
 
 On every request the server appends `Selected language: …` and `Current topic: …`.

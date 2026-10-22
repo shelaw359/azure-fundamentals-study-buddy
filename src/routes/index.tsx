@@ -9,7 +9,7 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "An unofficial AI study buddy for Azure Fundamentals (AZ-900). Simple explanations with African examples, Kiswahili and Sheng options, and quick check questions.",
+          "An unofficial AI study buddy for Azure Fundamentals (AZ-900). Simple explanations with African examples, English and Kiswahili options, and quick check questions.",
       },
       { property: "og:title", content: "AZ-900 Study Buddy (Unofficial)" },
       {
