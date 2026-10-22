@@ -47,7 +47,10 @@ function sanitizeMessages(input: unknown): UIMessage[] | null {
     const m = raw as Partial<UIMessage>;
     if ((m.role !== "user" && m.role !== "assistant") || !Array.isArray(m.parts)) return null;
     const parts = m.parts
-      .filter((p): p is { type: "text"; text: string } => p?.type === "text" && typeof (p as { text?: unknown }).text === "string")
+      .filter(
+        (p): p is { type: "text"; text: string } =>
+          p?.type === "text" && typeof (p as { text?: unknown }).text === "string",
+      )
       .map((p) => ({ type: "text" as const, text: p.text.slice(0, 6000) }));
     if (parts.length === 0) continue;
     cleaned.push({ id: String(m.id ?? crypto.randomUUID()), role: m.role, parts });
@@ -57,7 +60,10 @@ function sanitizeMessages(input: unknown): UIMessage[] | null {
 
 function gatewayMessage(error: APICallError): string | undefined {
   try {
-    const body = JSON.parse(error.responseBody ?? "") as { message?: unknown; error?: { message?: unknown } };
+    const body = JSON.parse(error.responseBody ?? "") as {
+      message?: unknown;
+      error?: { message?: unknown };
+    };
     const msg = body.message ?? body.error?.message;
     return typeof msg === "string" ? msg : undefined;
   } catch {
@@ -67,7 +73,8 @@ function gatewayMessage(error: APICallError): string | undefined {
 
 function friendlyError(error: unknown): string {
   if (APICallError.isInstance(error)) {
-    if (error.statusCode === 429) return "RATE_LIMIT: The study buddy is busy right now. Please wait a moment and try again.";
+    if (error.statusCode === 429)
+      return "RATE_LIMIT: The study buddy is busy right now. Please wait a moment and try again.";
     if (error.statusCode === 402)
       return `CREDITS: ${gatewayMessage(error) ?? "AI credits for this app have run out. The app owner needs to add credits."}`;
     if (error.statusCode === 403)
@@ -85,7 +92,9 @@ export async function handleChat(request: Request): Promise<Response> {
   if (!limit.allowed) {
     return json(
       429,
-      { error: `You're sending messages very fast. Please wait ${limit.retryAfterSeconds}s and try again.` },
+      {
+        error: `You're sending messages very fast. Please wait ${limit.retryAfterSeconds}s and try again.`,
+      },
       { "Retry-After": String(limit.retryAfterSeconds) },
     );
   }
@@ -103,12 +112,16 @@ export async function handleChat(request: Request): Promise<Response> {
   const last = messages[messages.length - 1];
   if (!last || last.role !== "user") return json(400, { error: "Please type a question first." });
   if (textOf(last).length > CHAT_LIMITS.maxMessageChars) {
-    return json(400, { error: `Please keep your message under ${CHAT_LIMITS.maxMessageChars} characters.` });
+    return json(400, {
+      error: `Please keep your message under ${CHAT_LIMITS.maxMessageChars} characters.`,
+    });
   }
 
   const language = isLanguageId(body.language) ? body.language : "english";
   const topic =
-    typeof body.topic === "string" && body.topic.trim() ? body.topic.trim().slice(0, 120) : "General AZ-900";
+    typeof body.topic === "string" && body.topic.trim()
+      ? body.topic.trim().slice(0, 120)
+      : "General AZ-900";
 
   const runIdFetch = createLovableAiGatewayRunIdFetch(getLovableAiGatewayRunId(request));
   const provider = createOpenAI({

@@ -83,7 +83,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
       { title: "AZ-900 Study Buddy (Unofficial)" },
-      { name: "description", content: "Unofficial AI study buddy for Azure Fundamentals (AZ-900)." },
+      {
+        name: "description",
+        content: "Unofficial AI study buddy for Azure Fundamentals (AZ-900).",
+      },
       { name: "theme-color", content: "#00626c" },
       { name: "apple-mobile-web-app-capable", content: "yes" },
       { name: "mobile-web-app-capable", content: "yes" },

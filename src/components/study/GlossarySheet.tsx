@@ -3,7 +3,14 @@ import { BookA, Search } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { GLOSSARY } from "@/lib/glossary";
 
 type Props = { onPick: (term: string) => void };
@@ -16,7 +23,9 @@ export function GlossarySheet({ onPick }: Props) {
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
     if (!q) return GLOSSARY;
-    return GLOSSARY.filter((g) => g.term.toLowerCase().includes(q) || g.definition.toLowerCase().includes(q));
+    return GLOSSARY.filter(
+      (g) => g.term.toLowerCase().includes(q) || g.definition.toLowerCase().includes(q),
+    );
   }, [query]);
 
   return (
@@ -32,7 +41,10 @@ export function GlossarySheet({ onPick }: Props) {
           <SheetDescription>Tap a term to get a full explanation in the chat.</SheetDescription>
         </SheetHeader>
         <div className="relative">
-          <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" aria-hidden />
+          <Search
+            className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
+            aria-hidden
+          />
           <Input
             value={query}
             onChange={(e) => setQuery(e.target.value)}

@@ -62,5 +62,5 @@ export function parseAnswer(raw: string): ParsedAnswer {
 
 /** Strips a leading "A. " / "B) " style label so the UI can add its own. */
 export function stripOptionLabel(option: string): string {
-  return option.replace(/^\s*[A-Da-d][.):\-]\s+/, "");
+  return option.replace(/^\s*[A-Da-d][.):-]\s+/, "");
 }

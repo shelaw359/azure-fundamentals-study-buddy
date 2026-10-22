@@ -14,7 +14,8 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: "AZ-900 Study Buddy (Unofficial)" },
       {
         property: "og:description",
-        content: "Learn Azure the African way: simple AZ-900 explanations, local examples and instant check questions.",
+        content:
+          "Learn Azure the African way: simple AZ-900 explanations, local examples and instant check questions.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

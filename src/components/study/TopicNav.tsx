@@ -1,6 +1,11 @@
 import { BookOpenCheck } from "lucide-react";
 
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { DOMAINS } from "@/lib/topics";
 import { cn } from "@/lib/utils";
 
@@ -18,7 +23,11 @@ export function TopicNav({ currentTopic, onSelect, disabled }: Props) {
         <BookOpenCheck className="size-4 text-primary" aria-hidden />
         <h2 className="text-sm font-semibold">Skills outline</h2>
       </div>
-      <Accordion type="multiple" defaultValue={[DOMAINS[0]?.id ?? ""]} className="flex flex-col gap-2">
+      <Accordion
+        type="multiple"
+        defaultValue={[DOMAINS[0]?.id ?? ""]}
+        className="flex flex-col gap-2"
+      >
         {DOMAINS.map((domain, i) => (
           <AccordionItem
             key={domain.id}

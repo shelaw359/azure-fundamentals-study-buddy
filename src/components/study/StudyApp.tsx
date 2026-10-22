@@ -1,10 +1,22 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport, type UIMessage } from "ai";
-import { AlertTriangle, Languages, LifeBuoy, Menu, RotateCcw, ShieldAlert, SquarePen } from "lucide-react";
+import {
+  AlertTriangle,
+  Languages,
+  LifeBuoy,
+  Menu,
+  RotateCcw,
+  ShieldAlert,
+  SquarePen,
+} from "lucide-react";
 import { toast } from "sonner";
 
-import { Conversation, ConversationContent, ConversationScrollButton } from "@/components/ai-elements/conversation";
+import {
+  Conversation,
+  ConversationContent,
+  ConversationScrollButton,
+} from "@/components/ai-elements/conversation";
 import {
   PromptInput,
   PromptInputFooter,
@@ -14,8 +26,20 @@ import {
 } from "@/components/ai-elements/prompt-input";
 import { Shimmer } from "@/components/ai-elements/shimmer";
 import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
 import { Skeleton } from "@/components/ui/skeleton";
 import logo from "@/assets/logo.png";
 import { useOnline } from "@/hooks/use-online";
@@ -60,23 +84,37 @@ function describeError(error: Error): string {
 
 async function celebrate() {
   const confetti = (await import("canvas-confetti")).default;
-  confetti({ particleCount: 120, spread: 75, origin: { y: 0.7 }, colors: ["#0f6b78", "#f2b544", "#2fa36b", "#ffffff"] });
+  confetti({
+    particleCount: 120,
+    spread: 75,
+    origin: { y: 0.7 },
+    colors: ["#0f6b78", "#f2b544", "#2fa36b", "#ffffff"],
+  });
 }
 
 export function StudyApp() {
   const online = useOnline();
-  const [language, setLanguage] = usePersistentState<LanguageId>("az900-language", DEFAULT_LANGUAGE, isLanguageId);
+  const [language, setLanguage] = usePersistentState<LanguageId>(
+    "az900-language",
+    DEFAULT_LANGUAGE,
+    isLanguageId,
+  );
   const [topic, setTopic] = usePersistentState<string>("az900-topic", DEFAULT_TOPIC, isString);
-  const [answers, setAnswers] = usePersistentState<Record<string, number>>("az900-answers", {}, isAnswers);
+  const [answers, setAnswers] = usePersistentState<Record<string, number>>(
+    "az900-answers",
+    {},
+    isAnswers,
+  );
   const [streak, setStreak] = usePersistentState<number>("az900-streak", 0, isNumber);
   const [topicsOpen, setTopicsOpen] = useState(false);
   const [chatHydrated, setChatHydrated] = useState(false);
 
   const transport = useMemo(() => new DefaultChatTransport({ api: "/api/chat" }), []);
-  const { messages, sendMessage, setMessages, status, error, regenerate, stop, clearError } = useChat({
-    id: "az900-main",
-    transport,
-  });
+  const { messages, sendMessage, setMessages, status, error, regenerate, stop, clearError } =
+    useChat({
+      id: "az900-main",
+      transport,
+    });
   const busy = status === "submitted" || status === "streaming";
 
   // Register the offline app-shell worker (no-op in preview/dev).
@@ -111,7 +149,8 @@ export function StudyApp() {
   // Keep the composer focused on devices with a real keyboard.
   useEffect(() => {
     if (busy || !chatHydrated) return;
-    if (window.matchMedia("(pointer: fine)").matches) document.getElementById("chat-input")?.focus();
+    if (window.matchMedia("(pointer: fine)").matches)
+      document.getElementById("chat-input")?.focus();
   }, [busy, chatHydrated]);
 
   const score = useMemo(() => {
@@ -202,9 +241,17 @@ export function StudyApp() {
             <Menu aria-hidden />
           </Button>
           <div className="flex min-w-0 flex-1 items-center gap-2">
-            <img src={logo} alt="AZ-900 Study Buddy cloud logo" width={36} height={36} className="size-9 shrink-0 rounded-xl" />
+            <img
+              src={logo}
+              alt="AZ-900 Study Buddy cloud logo"
+              width={36}
+              height={36}
+              className="size-9 shrink-0 rounded-xl"
+            />
             <div className="min-w-0">
-              <h1 className="truncate text-base font-bold leading-tight sm:text-lg">AZ-900 Study Buddy</h1>
+              <h1 className="truncate text-base font-bold leading-tight sm:text-lg">
+                AZ-900 Study Buddy
+              </h1>
               <p className="truncate text-xs text-muted-foreground">Learn Azure the African way</p>
             </div>
           </div>
@@ -212,7 +259,10 @@ export function StudyApp() {
           <ThemeToggle />
           <div className="flex w-full items-center gap-1 sm:w-auto">
             <Select value={language} onValueChange={(v) => isLanguageId(v) && setLanguage(v)}>
-              <SelectTrigger className="h-9 flex-1 gap-2 rounded-full sm:w-52 sm:flex-none" aria-label="Language">
+              <SelectTrigger
+                className="h-9 flex-1 gap-2 rounded-full sm:w-52 sm:flex-none"
+                aria-label="Language"
+              >
                 <Languages className="size-4 shrink-0 text-primary" aria-hidden />
                 <SelectValue />
               </SelectTrigger>
@@ -225,7 +275,13 @@ export function StudyApp() {
               </SelectContent>
             </Select>
             <GlossarySheet onPick={(term) => ask(`Explain the term "${term}".`, term)} />
-            <Button variant="ghost" size="icon" className="rounded-full" aria-label="New chat" onClick={newChat}>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="rounded-full"
+              aria-label="New chat"
+              onClick={newChat}
+            >
               <SquarePen aria-hidden />
             </Button>
             <InstallButton />
@@ -295,7 +351,12 @@ export function StudyApp() {
                 >
                   <AlertTriangle className="size-5 shrink-0 text-destructive" aria-hidden />
                   <p className="flex-1">{describeError(error)}</p>
-                  <Button size="sm" variant="outline" onClick={retry} className="h-10 rounded-full px-4">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={retry}
+                    className="h-10 rounded-full px-4"
+                  >
                     <RotateCcw aria-hidden /> Retry
                   </Button>
                 </div>
@@ -314,7 +375,9 @@ export function StudyApp() {
                   className="h-9 rounded-full px-4"
                   disabled={!hasAssistant || busy}
                   onClick={() =>
-                    ask("I'm lost. Please re-explain your last answer using a much simpler analogy and shorter sentences.")
+                    ask(
+                      "I'm lost. Please re-explain your last answer using a much simpler analogy and shorter sentences.",
+                    )
                   }
                 >
                   <LifeBuoy aria-hidden /> I'm lost
@@ -332,8 +395,14 @@ export function StudyApp() {
                   className="text-[15px]"
                 />
                 <PromptInputFooter className="justify-between">
-                  <span className="pl-1 text-[11px] text-muted-foreground">Enter to send · Shift+Enter for a new line</span>
-                  <PromptInputSubmit status={status} onStop={() => void stop()} aria-label={busy ? "Stop" : "Send"} />
+                  <span className="pl-1 text-[11px] text-muted-foreground">
+                    Enter to send · Shift+Enter for a new line
+                  </span>
+                  <PromptInputSubmit
+                    status={status}
+                    onStop={() => void stop()}
+                    aria-label={busy ? "Stop" : "Send"}
+                  />
                 </PromptInputFooter>
               </PromptInput>
             </div>
@@ -343,7 +412,12 @@ export function StudyApp() {
 
       <footer className="border-t border-border bg-card px-3 py-2 text-center text-[11px] text-muted-foreground">
         Unofficial study aid. Always confirm details on{" "}
-        <a href={LEARN_URL} target="_blank" rel="noreferrer" className="font-semibold text-primary underline underline-offset-2">
+        <a
+          href={LEARN_URL}
+          target="_blank"
+          rel="noreferrer"
+          className="font-semibold text-primary underline underline-offset-2"
+        >
           Microsoft Learn
         </a>
         .

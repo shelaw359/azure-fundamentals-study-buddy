@@ -54,7 +54,10 @@ export function QuizCard({ quiz, selected, onAnswer, onNext, onExplainMore, busy
                 className={cn(
                   "flex size-6 shrink-0 items-center justify-center rounded-full bg-muted text-xs font-bold",
                   answered && isCorrect && "bg-success text-success-foreground",
-                  answered && isPicked && !isCorrect && "bg-destructive text-destructive-foreground",
+                  answered &&
+                    isPicked &&
+                    !isCorrect &&
+                    "bg-destructive text-destructive-foreground",
                 )}
               >
                 {LETTERS[i]}
@@ -79,7 +82,11 @@ export function QuizCard({ quiz, selected, onAnswer, onNext, onExplainMore, busy
               <XCircle className="mt-0.5 size-5 shrink-0 text-destructive" aria-hidden />
             )}
             <div>
-              <p className="font-semibold">{correct ? "Correct — well done!" : `Not quite. The answer is ${LETTERS[quiz.correctIndex]}.`}</p>
+              <p className="font-semibold">
+                {correct
+                  ? "Correct — well done!"
+                  : `Not quite. The answer is ${LETTERS[quiz.correctIndex]}.`}
+              </p>
               <p className="mt-1 text-foreground/85">{quiz.explanation}</p>
             </div>
           </div>
@@ -87,7 +94,13 @@ export function QuizCard({ quiz, selected, onAnswer, onNext, onExplainMore, busy
             <Button size="sm" onClick={onNext} disabled={busy} className="h-10 rounded-full px-4">
               Next question
             </Button>
-            <Button size="sm" variant="outline" onClick={onExplainMore} disabled={busy} className="h-10 rounded-full px-4">
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={onExplainMore}
+              disabled={busy}
+              className="h-10 rounded-full px-4"
+            >
               Explain more
             </Button>
           </div>

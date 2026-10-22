@@ -2,7 +2,13 @@ import type { UIMessage } from "ai";
 import { Copy } from "lucide-react";
 import { toast } from "sonner";
 
-import { Message, MessageAction, MessageActions, MessageContent, MessageResponse } from "@/components/ai-elements/message";
+import {
+  Message,
+  MessageAction,
+  MessageActions,
+  MessageContent,
+  MessageResponse,
+} from "@/components/ai-elements/message";
 import { Shimmer } from "@/components/ai-elements/shimmer";
 import { Button } from "@/components/ui/button";
 import logo from "@/assets/logo.png";
@@ -17,7 +23,10 @@ export const QUICK_ACTIONS = [
     label: "Compare with something similar",
     prompt: "Compare this with a similar Azure concept that learners often confuse it with.",
   },
-  { label: "Explain in Swahili", prompt: "Please explain that in Kiswahili (keep the Azure terms in English)." },
+  {
+    label: "Explain in Swahili",
+    prompt: "Please explain that in Kiswahili (keep the Azure terms in English).",
+  },
 ];
 
 export function messageText(message: UIMessage): string {

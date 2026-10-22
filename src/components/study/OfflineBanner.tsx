@@ -9,8 +9,8 @@ export function OfflineBanner() {
     >
       <WifiOff className="size-4 shrink-0 text-amber-foreground dark:text-amber" aria-hidden />
       <p>
-        <span className="font-semibold">You're offline.</span> Your saved chat and glossary still work —
-        new answers will come back when you reconnect.
+        <span className="font-semibold">You're offline.</span> Your saved chat and glossary still
+        work — new answers will come back when you reconnect.
       </p>
     </div>
   );

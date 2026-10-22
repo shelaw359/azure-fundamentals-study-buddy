@@ -16,7 +16,14 @@ export function ScoreRing({ correct, answered }: Props) {
       title={`Score: ${correct}/${answered}`}
     >
       <svg width={size} height={size} className="-rotate-90">
-        <circle cx={size / 2} cy={size / 2} r={r} fill="none" strokeWidth={stroke} className="stroke-muted" />
+        <circle
+          cx={size / 2}
+          cy={size / 2}
+          r={r}
+          fill="none"
+          strokeWidth={stroke}
+          className="stroke-muted"
+        />
         <circle
           cx={size / 2}
           cy={size / 2}

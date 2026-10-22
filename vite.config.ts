@@ -51,7 +51,8 @@ export default defineConfig({
               },
             },
             {
-              urlPattern: ({ url, sameOrigin }) => sameOrigin && url.pathname.startsWith("/assets/"),
+              urlPattern: ({ url, sameOrigin }) =>
+                sameOrigin && url.pathname.startsWith("/assets/"),
               handler: "CacheFirst",
               options: {
                 cacheName: "az900-assets",
@@ -60,7 +61,8 @@ export default defineConfig({
             },
             {
               urlPattern: ({ url }) =>
-                url.origin === "https://fonts.googleapis.com" || url.origin === "https://fonts.gstatic.com",
+                url.origin === "https://fonts.googleapis.com" ||
+                url.origin === "https://fonts.gstatic.com",
               handler: "StaleWhileRevalidate",
               options: { cacheName: "az900-fonts", expiration: { maxEntries: 20 } },
             },
