@@ -1,0 +1,19 @@
+{
+  "id": "/",
+  "name": "AZ-900 Study Buddy (Unofficial)",
+  "short_name": "AZ900 Buddy",
+  "description": "Unofficial AI study buddy for Azure Fundamentals (AZ-900). Learn Azure the African way.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#00626c",
+  "background_color": "#f9f6f1",
+  "lang": "en",
+  "categories": ["education"],
+  "icons": [
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

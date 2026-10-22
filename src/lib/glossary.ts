@@ -1,0 +1,150 @@
+// Original, plain-English one-liners for key AZ-900 terms.
+
+export type GlossaryTerm = { term: string; definition: string };
+
+export const GLOSSARY: GlossaryTerm[] = [
+  {
+    term: "Cloud computing",
+    definition:
+      "Renting computing power, storage and apps over the internet instead of owning the hardware.",
+  },
+  {
+    term: "Shared responsibility model",
+    definition:
+      "A split of security duties: the cloud provider secures some layers, you secure the rest.",
+  },
+  {
+    term: "Public cloud",
+    definition:
+      "Cloud services owned by a provider and shared by many customers over the internet.",
+  },
+  {
+    term: "Private cloud",
+    definition:
+      "Cloud resources used by only one organisation, in its own or a hosted data centre.",
+  },
+  { term: "Hybrid cloud", definition: "A mix of public and private cloud that work together." },
+  {
+    term: "Consumption-based model",
+    definition: "You pay only for what you actually use, like a prepaid token meter.",
+  },
+  {
+    term: "CapEx vs OpEx",
+    definition: "Buying equipment up front (CapEx) versus paying as you go for services (OpEx).",
+  },
+  {
+    term: "High availability",
+    definition: "Designing a service so it stays up and reachable with very little downtime.",
+  },
+  { term: "Scalability", definition: "Adding or removing resources to handle more or less work." },
+  {
+    term: "Elasticity",
+    definition: "Scaling that happens automatically as demand rises and falls.",
+  },
+  {
+    term: "IaaS",
+    definition:
+      "Infrastructure as a Service: you rent virtual machines and networks and manage the rest yourself.",
+  },
+  {
+    term: "PaaS",
+    definition:
+      "Platform as a Service: the provider runs the servers and OS; you bring your app and data.",
+  },
+  { term: "SaaS", definition: "Software as a Service: a finished app you just log into and use." },
+  {
+    term: "Serverless",
+    definition: "Running code without managing servers; you pay only when the code runs.",
+  },
+  { term: "Region", definition: "A geographic area containing one or more Azure data centres." },
+  {
+    term: "Region pair",
+    definition: "Two regions in the same geography linked for disaster recovery.",
+  },
+  {
+    term: "Availability zone",
+    definition:
+      "Physically separate data centres inside one region, with their own power and cooling.",
+  },
+  {
+    term: "Resource group",
+    definition: "A logical folder that holds related Azure resources so you manage them together.",
+  },
+  {
+    term: "Subscription",
+    definition: "A billing and access boundary that contains your resource groups.",
+  },
+  {
+    term: "Management group",
+    definition: "A container above subscriptions for applying policies and access at scale.",
+  },
+  {
+    term: "Azure Resource Manager",
+    definition:
+      "The deployment and management layer that handles every create, update and delete request in Azure.",
+  },
+  {
+    term: "Virtual machine",
+    definition: "A software computer running in Azure that you control like a physical server.",
+  },
+  {
+    term: "Azure Functions",
+    definition: "Azure's serverless service that runs small pieces of code when an event happens.",
+  },
+  {
+    term: "Virtual network",
+    definition: "A private network in Azure that lets your resources talk to each other securely.",
+  },
+  {
+    term: "ExpressRoute",
+    definition:
+      "A private, dedicated connection from your premises to Azure that skips the public internet.",
+  },
+  {
+    term: "Blob storage",
+    definition:
+      "Storage for large amounts of unstructured data such as photos, videos and backups.",
+  },
+  {
+    term: "LRS / ZRS / GRS",
+    definition:
+      "Ways Azure copies your data: within one data centre, across zones, or to another region.",
+  },
+  {
+    term: "Microsoft Entra ID",
+    definition: "Azure's cloud identity service for sign-in and access to apps.",
+  },
+  {
+    term: "Multi-factor authentication",
+    definition: "Proving who you are with two or more methods, like a password plus a phone code.",
+  },
+  {
+    term: "RBAC",
+    definition: "Role-based access control: giving people only the permissions their role needs.",
+  },
+  {
+    term: "Zero Trust",
+    definition: "A security approach that never assumes trust and always verifies every request.",
+  },
+  {
+    term: "Azure Policy",
+    definition: "Rules that check and enforce how resources must be set up.",
+  },
+  {
+    term: "Resource lock",
+    definition: "A setting that stops resources from being deleted or changed by accident.",
+  },
+  {
+    term: "TCO calculator",
+    definition: "A tool that estimates savings from moving on-premises workloads to Azure.",
+  },
+  {
+    term: "Azure Advisor",
+    definition:
+      "A free adviser that gives personalised tips on cost, security, reliability and performance.",
+  },
+  {
+    term: "Azure Monitor",
+    definition: "A service that collects and analyses metrics and logs from your resources.",
+  },
+];

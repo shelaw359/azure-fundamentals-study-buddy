@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#00626c" />
+    <title>You're offline — AZ-900 Study Buddy (Unofficial)</title>
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <style>
+      :root { color-scheme: light dark; }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0; min-height: 100dvh; display: grid; place-items: center; padding: 24px;
+        font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+        background: #f9f6f1; color: #1f3338;
+      }
+      .card {
+        max-width: 420px; width: 100%; text-align: center; background: #fffdf9;
+        border: 1px solid #e6e0d5; border-radius: 24px; padding: 32px 24px;
+        box-shadow: 0 18px 40px -16px rgba(0, 80, 90, 0.3);
+      }
+      img { width: 88px; height: 88px; border-radius: 22px; }
+      h1 { font-size: 1.4rem; margin: 18px 0 8px; }
+      p { line-height: 1.55; margin: 0 0 12px; color: #4a5f63; }
+      button {
+        margin-top: 12px; min-height: 48px; padding: 0 24px; border: 0; border-radius: 999px;
+        background: #00626c; color: #fff; font-size: 1rem; font-weight: 600; cursor: pointer;
+      }
+      .badge {
+        display: inline-block; margin-top: 18px; font-size: 0.75rem; font-weight: 600;
+        background: #fbeccb; color: #5a3b0c; padding: 6px 12px; border-radius: 999px;
+      }
+      @media (prefers-color-scheme: dark) {
+        body { background: #091619; color: #eef0ec; }
+        .card { background: #13262a; border-color: #23393e; }
+        p { color: #a9bcbf; }
+        button { background: #5cc2c6; color: #08262a; }
+        .badge { background: #3f3215; color: #f3c46a; }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="card">
+      <img src="/icons/icon-192.png" alt="" />
+      <h1>No internet right now</h1>
+      <p>Pole! The Study Buddy needs a connection to load this page and give new answers.</p>
+      <p>Once you're back online, your saved chat will be right where you left it.</p>
+      <button type="button" onclick="location.reload()">Try again</button>
+      <div class="badge">Unofficial study tool, not affiliated with Microsoft</div>
+    </main>
+    <script>
+      window.addEventListener("online", function () { location.reload(); });
+    </script>
+  </body>
+</html>
