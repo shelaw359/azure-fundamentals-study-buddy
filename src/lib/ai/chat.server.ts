@@ -1,4 +1,4 @@
-// Server-only: streams tutor answers through the xAI (Grok) API
+// Server-only: streams tutor answers through the Groq API
 // (OpenAI-compatible endpoint). The API key and prompt stay on the server.
 import { createOpenAI } from "@ai-sdk/openai";
 import { APICallError, convertToModelMessages, streamText, type UIMessage } from "ai";
@@ -7,9 +7,9 @@ import { isLanguageId, languageLabel } from "@/lib/languages";
 import { CHAT_LIMITS, createRateLimiter } from "@/lib/rate-limit";
 import { buildInstructions } from "./tutor-prompt";
 
-const XAI_BASE_URL = "https://api.x.ai/v1";
-// Default to standard xAI Grok model compatible with the OpenAI SDK
-const DEFAULT_MODEL = "grok-beta";
+const GROQ_BASE_URL = "https://api.groq.com/openai/v1";
+// Fast, powerful open-source model hosted on Groq
+const DEFAULT_MODEL = "llama-3.3-70b-versatile";
 
 const limiter = createRateLimiter(CHAT_LIMITS.requestsPerWindow, CHAT_LIMITS.windowMs);
 
@@ -58,11 +58,11 @@ function sanitizeMessages(input: unknown): UIMessage[] | null {
 function friendlyError(error: unknown): string {
   if (APICallError.isInstance(error)) {
     if (error.statusCode === 429)
-      return "RATE_LIMIT: The study buddy is busy right now. Please wait a moment and try again.";
+      return "RATE_LIMIT: Groq is handling high traffic right now. Please wait a moment and try again.";
     if (error.statusCode === 401)
-      return "BLOCKED: The Grok API key is not accepted. Please check your XAI_API_KEY or GROK_API_KEY environment variable.";
+      return "BLOCKED: The Groq API key is invalid. Please check your GROK_API_KEY environment variable.";
     if (error.statusCode === 402 || error.statusCode === 403)
-      return "CREDITS: The xAI account has no credits or access.";
+      return "CREDITS: There is an issue with your Groq account access.";
   }
   console.error("Tutor stream error", error);
   return "Something went wrong, please try again.";
@@ -70,13 +70,12 @@ function friendlyError(error: unknown): string {
 
 export async function handleChat(request: Request): Promise<Response> {
   const apiKey =
-    process.env["GROK_API_KEY"] ??
-    process.env["Grok_API_Key"] ??
-    process.env["XAI_API_KEY"] ??
-    process.env["Xai_API_Key"];
+    process.env["GROQ_API_KEY"] ??
+    process.env["Groq_API_Key"] ??
+    process.env["GROQ_KEY"];
     
-  if (!apiKey) return json(500, { error: "The Grok API key is not configured yet in environment variables." });
-  const model = process.env["XAI_MODEL"]?.trim() || DEFAULT_MODEL;
+  if (!apiKey) return json(500, { error: "The Groq API key is not configured yet in environment variables." });
+  const model = process.env["GROQ_MODEL"]?.trim() || DEFAULT_MODEL;
 
   const limit = limiter.check(clientKey(request));
   if (!limit.allowed) {
@@ -114,7 +113,7 @@ export async function handleChat(request: Request): Promise<Response> {
       : "General AZ-900";
 
   const provider = createOpenAI({
-    baseURL: XAI_BASE_URL,
+    baseURL: GROQ_BASE_URL,
     apiKey,
   });
 
