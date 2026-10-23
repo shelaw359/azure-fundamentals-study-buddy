@@ -8,7 +8,8 @@ import { CHAT_LIMITS, createRateLimiter } from "@/lib/rate-limit";
 import { buildInstructions } from "./tutor-prompt";
 
 const GROQ_BASE_URL = "https://api.groq.com/openai/v1";
-// Fast, powerful open-source model hosted on Groq
+// Fast general-purpose model that starts answering almost immediately.
+// To use another Groq model, add a server secret named GROQ_MODEL.
 const DEFAULT_MODEL = "llama-3.3-70b-versatile";
 
 const limiter = createRateLimiter(CHAT_LIMITS.requestsPerWindow, CHAT_LIMITS.windowMs);
@@ -58,23 +59,19 @@ function sanitizeMessages(input: unknown): UIMessage[] | null {
 function friendlyError(error: unknown): string {
   if (APICallError.isInstance(error)) {
     if (error.statusCode === 429)
-      return "RATE_LIMIT: Groq is handling high traffic right now. Please wait a moment and try again.";
+      return "RATE_LIMIT: The study buddy is busy right now. Please wait a moment and try again.";
     if (error.statusCode === 401)
-      return "BLOCKED: The Groq API key is invalid. Please check your GROK_API_KEY environment variable.";
+      return "BLOCKED: The AI service key is not accepted. The app owner needs to check the API key.";
     if (error.statusCode === 402 || error.statusCode === 403)
-      return "CREDITS: There is an issue with your Groq account access.";
+      return "BLOCKED: The AI service account has no access. The app owner needs to check the Groq account.";
   }
   console.error("Tutor stream error", error);
   return "Something went wrong, please try again.";
 }
 
 export async function handleChat(request: Request): Promise<Response> {
-  const apiKey =
-    process.env["GROQ_API_KEY"] ??
-    process.env["Groq_API_Key"] ??
-    process.env["GROQ_KEY"];
-    
-  if (!apiKey) return json(500, { error: "The Groq API key is not configured yet in environment variables." });
+  const apiKey = process.env["GROQ_API_KEY"] ?? process.env["Groq_API_Key"];
+  if (!apiKey) return json(500, { error: "The AI service is not configured yet." });
   const model = process.env["GROQ_MODEL"]?.trim() || DEFAULT_MODEL;
 
   const limit = limiter.check(clientKey(request));
@@ -119,7 +116,7 @@ export async function handleChat(request: Request): Promise<Response> {
 
   const result = streamText({
     model: provider.chat(model),
-    system: buildInstructions(languageLabel(language), topic),
+    instructions: buildInstructions(languageLabel(language), topic),
     messages: await convertToModelMessages(messages),
     abortSignal: request.signal,
   });
