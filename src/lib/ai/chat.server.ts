@@ -1,18 +1,16 @@
-// Server-only: streams tutor answers through Lovable AI Gateway.
+// Server-only: streams tutor answers through Google's Gemini API
+// (OpenAI-compatible endpoint). The API key and prompt stay on the server.
 import { createOpenAI } from "@ai-sdk/openai";
 import { APICallError, convertToModelMessages, streamText, type UIMessage } from "ai";
 
 import { isLanguageId, languageLabel } from "@/lib/languages";
 import { CHAT_LIMITS, createRateLimiter } from "@/lib/rate-limit";
 import { buildInstructions } from "./tutor-prompt";
-import {
-  createLovableAiGatewayRunIdFetch,
-  getLovableAiGatewayRunId,
-  withLovableAiGatewayRunIdHeader,
-} from "./run-id";
 
-const GATEWAY_URL = "https://ai.gateway.lovable.dev/v1";
-const MODEL = "openai/gpt-6-astra";
+const GEMINI_BASE_URL = "https://generativelanguage.googleapis.com/v1beta/openai/";
+// "gemini-flash-latest" always points at the current Flash model.
+// To pin a specific model, add a server secret named GEMINI_MODEL.
+const DEFAULT_MODEL = "gemini-flash-latest";
 
 const limiter = createRateLimiter(CHAT_LIMITS.requestsPerWindow, CHAT_LIMITS.windowMs);
 
@@ -58,35 +56,21 @@ function sanitizeMessages(input: unknown): UIMessage[] | null {
   return cleaned.length > 0 ? cleaned : null;
 }
 
-function gatewayMessage(error: APICallError): string | undefined {
-  try {
-    const body = JSON.parse(error.responseBody ?? "") as {
-      message?: unknown;
-      error?: { message?: unknown };
-    };
-    const msg = body.message ?? body.error?.message;
-    return typeof msg === "string" ? msg : undefined;
-  } catch {
-    return undefined;
-  }
-}
-
 function friendlyError(error: unknown): string {
   if (APICallError.isInstance(error)) {
     if (error.statusCode === 429)
       return "RATE_LIMIT: The study buddy is busy right now. Please wait a moment and try again.";
-    if (error.statusCode === 402)
-      return `CREDITS: ${gatewayMessage(error) ?? "AI credits for this app have run out. The app owner needs to add credits."}`;
-    if (error.statusCode === 403)
-      return `BLOCKED: ${gatewayMessage(error) ?? "AI access is currently blocked for this app."}`;
+    if (error.statusCode === 401 || error.statusCode === 403)
+      return "BLOCKED: The AI service key is not accepted. The app owner needs to check the API key.";
   }
   console.error("Tutor stream error", error);
   return "Something went wrong, please try again.";
 }
 
 export async function handleChat(request: Request): Promise<Response> {
-  const apiKey = process.env["LOVABLE_API_KEY"];
+  const apiKey = process.env["GEMINI_API_KEY"] ?? process.env["Gemini_API_Key"];
   if (!apiKey) return json(500, { error: "The AI service is not configured yet." });
+  const model = process.env["GEMINI_MODEL"]?.trim() || DEFAULT_MODEL;
 
   const limit = limiter.check(clientKey(request));
   if (!limit.allowed) {
@@ -123,36 +107,20 @@ export async function handleChat(request: Request): Promise<Response> {
       ? body.topic.trim().slice(0, 120)
       : "General AZ-900";
 
-  const runIdFetch = createLovableAiGatewayRunIdFetch(getLovableAiGatewayRunId(request));
   const provider = createOpenAI({
-    baseURL: GATEWAY_URL,
+    baseURL: GEMINI_BASE_URL,
     apiKey,
-    headers: { "Lovable-API-Key": apiKey, "X-Lovable-AIG-SDK": "vercel-ai-sdk" },
-    fetch: runIdFetch.fetch,
   });
 
   const result = streamText({
-    model: provider.responses(MODEL),
+    model: provider.chat(model),
     instructions: buildInstructions(languageLabel(language), topic),
     messages: await convertToModelMessages(messages),
     abortSignal: request.signal,
-    providerOptions: {
-      openai: {
-        forceReasoning: true,
-        reasoningEffort: "low",
-        reasoningSummary: "auto",
-        store: false,
-        include: ["reasoning.encrypted_content"],
-      },
-    },
   });
 
-  return withLovableAiGatewayRunIdHeader(
-    result.toUIMessageStreamResponse({
-      originalMessages: messages,
-      sendReasoning: true,
-      onError: friendlyError,
-    }),
-    runIdFetch,
-  );
+  return result.toUIMessageStreamResponse({
+    originalMessages: messages,
+    onError: friendlyError,
+  });
 }
