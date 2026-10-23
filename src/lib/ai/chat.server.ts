@@ -66,6 +66,11 @@ function friendlyError(error: unknown): string {
       return "BLOCKED: The AI service account has no access. The app owner needs to check the Groq account.";
   }
   console.error("Tutor stream error", error);
+  if (APICallError.isInstance(error)) {
+    // Short, key-free detail so the real cause is visible while testing.
+    const detail = String(error.message ?? "").replace(/\s+/g, " ").slice(0, 160);
+    return `Something went wrong, please try again. (AI service ${error.statusCode ?? "error"}: ${detail})`;
+  }
   return "Something went wrong, please try again.";
 }
 
