@@ -117,6 +117,11 @@ export async function handleChat(request: Request): Promise<Response> {
     instructions: buildInstructions(languageLabel(language), topic),
     messages: await convertToModelMessages(messages),
     abortSignal: request.signal,
+    // Low thinking effort: Gemini starts answering sooner (documented for the
+    // OpenAI-compatible endpoint). Remove this block if the model rejects it.
+    providerOptions: {
+      openai: { reasoningEffort: "low" },
+    },
   });
 
   return result.toUIMessageStreamResponse({
