@@ -5,6 +5,12 @@
 
 ---
 
+## Content source
+
+Topics follow the public [AZ-900 study guide (skills measured as of July 20, 2026)](https://learn.microsoft.com/credentials/certifications/resources/study-guides/az-900) on Microsoft Learn. All explanations and check questions are original and generated from those topics. No real exam questions or exam dumps are used.
+
+---
+
 ## Problem statement
 
 Cloud concepts like "elasticity", "availability zones" or "the shared responsibility model" are abstract. Most study material assumes a Western context and fluent technical English, which makes AZ-900 harder than it needs to be for many African learners.
@@ -35,7 +41,19 @@ AZ-900 Study Buddy is a mobile-first chat tutor that:
 
 ## Screenshots
 
-_Add screenshots here (mobile 375px, desktop, dark mode, quiz card)._
+| Chat answer with an African analogy | Skills outline and quick actions |
+| --- | --- |
+| ![Chat answer](docs/screenshots/1-chat-answer.png) | ![Skills outline](docs/screenshots/5-skills-outline.png) |
+
+| Check question | Instant feedback |
+| --- | --- |
+| ![Quiz question](docs/screenshots/2-quiz-question.png) | ![Quiz feedback](docs/screenshots/3-quiz-feedback.png) |
+
+**Kiswahili mode** (Azure terms stay in English):
+
+![Kiswahili answer](docs/screenshots/4-kiswahili.png)
+
+**Live demo:** https://azure-fundamentals-study-buddy.lovable.app
 
 ## Tech stack
 
